@@ -227,7 +227,7 @@ def train_model(n_epochs, training_loader, test_data_loader, model,
                 train_loss_min = train_loss
     return model, test_outputs, test_targets, df_cm, ids_extend, train_outputs
 
-
+# СОХРАНИТЬ КУДА-ТО
 ckpt_path = "/Users/anastasiabelaeva/Desktop/Postgraduate/данные/CT/экономыш 2023/checkpoints/curr_ckpt"
 best_model_path = "/Users/anastasiabelaeva/Desktop/Postgraduate/данные/CT/экономыш 2023/best_model.pt"
 
@@ -235,6 +235,7 @@ trained_model, test_output, test_targets, conf_matrix, ids, train_outputs = \
     train_model(EPOCHS, train_data_loader, test_data_loader, model, optimizer, ckpt_path, best_model_path)
 
 # save train and test datasets to use them in Random Forest
+# СОХРАНИТЬ КУДА-ТО И ИСПОЛЬЗОВАТЬ В Random forest
 df_test['LLM_outputs'] = test_output
 df_test.to_csv('/Users/anastasiabelaeva/Desktop/Postgraduate/данные/LLMs literacy/дообучение/test_LLM_outputs.csv')
 train_df['LLM_outputs'] = train_outputs

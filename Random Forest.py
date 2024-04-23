@@ -16,6 +16,7 @@ seed = np.random.seed(22)
 skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=state)
 
 # load datasets that were used to train and test LLM
+# ВЗЯТЬ ОТКУДА-ТО
 train_x = pd.read_csv('/Users/anastasiabelaeva/Desktop/Postgraduate/данные/LLMs literacy/дообучение/train_LLM_outputs.csv', index_col='Unnamed: 0')
 test_x = pd.read_csv('/Users/anastasiabelaeva/Desktop/Postgraduate/данные/LLMs literacy/дообучение/test_LLM_outputs.csv', index_col='Unnamed: 0')
 train_y = pd.DataFrame()
