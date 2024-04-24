@@ -1,3 +1,4 @@
+import pathlib
 import pandas as pd
 import numpy as np
 from spacy.lang.ru.stop_words import STOP_WORDS
@@ -10,15 +11,18 @@ from sklearn.ensemble import RandomForestClassifier
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix, classification_report, ConfusionMatrixDisplay
 
+
+base_path = pathlib.Path(__file__).parent
+temp_path = base_path.joinpath('temp_dir')
+
 # model parameters
 state = np.random.RandomState(12345)
 seed = np.random.seed(22)
 skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=state)
 
 # load datasets that were used to train and test LLM
-# ВЗЯТЬ ОТКУДА-ТО
-train_x = pd.read_csv('/Users/anastasiabelaeva/Desktop/Postgraduate/данные/LLMs literacy/дообучение/train_LLM_outputs.csv', index_col='Unnamed: 0')
-test_x = pd.read_csv('/Users/anastasiabelaeva/Desktop/Postgraduate/данные/LLMs literacy/дообучение/test_LLM_outputs.csv', index_col='Unnamed: 0')
+train_x = pd.read_csv(temp_path.joinpath('train_LLM_outputs.csv'), index_col='Unnamed: 0')
+test_x = pd.read_csv(temp_path.joinpath('test_LLM_outputs.csv'), index_col='Unnamed: 0')
 train_y = pd.DataFrame()
 test_y = pd.DataFrame()
 train_y['mark'] = train_x['mark']

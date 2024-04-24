@@ -1,3 +1,4 @@
+import pathlib
 import pandas as pd
 import torch
 import shutil
@@ -10,7 +11,11 @@ from sklearn.metrics import classification_report
 import seaborn as sn
 
 # load and name the dataset
-df = pd.read_csv('/Users/anastasiabelaeva/Desktop/Postgraduate/данные/LLMs literacy/train_val_test_df/df_preprocessed.csv')
+base_path = pathlib.Path(__file__).parent
+temp_path = base_path.joinpath('temp_dir')
+results_path = base_path.joinpath('results')
+
+df = pd.read_csv(base_path.joinpath('df_preprocessed.csv'))
 target_list = ['score_0', 'score_1', 'score_2']
 df.rename(columns={'student_id': 'id'}, inplace=True)
 
@@ -228,8 +233,8 @@ def train_model(n_epochs, training_loader, test_data_loader, model,
     return model, test_outputs, test_targets, df_cm, ids_extend, train_outputs
 
 # СОХРАНИТЬ КУДА-ТО
-ckpt_path = "/Users/anastasiabelaeva/Desktop/Postgraduate/данные/CT/экономыш 2023/checkpoints/curr_ckpt"
-best_model_path = "/Users/anastasiabelaeva/Desktop/Postgraduate/данные/CT/экономыш 2023/best_model.pt"
+ckpt_path = results_path.joinpath("curr_ckpt")
+best_model_path = results_path.joinpath("best_model.pt")
 
 trained_model, test_output, test_targets, conf_matrix, ids, train_outputs = \
     train_model(EPOCHS, train_data_loader, test_data_loader, model, optimizer, ckpt_path, best_model_path)
@@ -237,9 +242,9 @@ trained_model, test_output, test_targets, conf_matrix, ids, train_outputs = \
 # save train and test datasets to use them in Random Forest
 # СОХРАНИТЬ КУДА-ТО И ИСПОЛЬЗОВАТЬ В Random forest
 df_test['LLM_outputs'] = test_output
-df_test.to_csv('/Users/anastasiabelaeva/Desktop/Postgraduate/данные/LLMs literacy/дообучение/test_LLM_outputs.csv')
+df_test.to_csv(temp_path.joinpath('test_LLM_outputs.csv'))
 train_df['LLM_outputs'] = train_outputs
-train_df.to_csv('/Users/anastasiabelaeva/Desktop/Postgraduate/данные/LLMs literacy/дообучение/train_LLM_outputs.csv')
+train_df.to_csv(temp_path.joinpath('train_LLM_outputs.csv'))
 
 # metrics report
 report = classification_report(test_targets, test_output)
