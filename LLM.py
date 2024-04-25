@@ -71,7 +71,7 @@ class CustomDataset(torch.utils.data.Dataset):
 
 # prepare and load train and test datasets
 train_size = 0.7
-train_df = df.sample(frac=train_size, random_state=6).reset_index(drop=True)
+train_df = df.sample(frac=train_size, random_state=0).reset_index(drop=True)
 train_df.set_index('id', inplace=True)
 df.set_index('id', inplace=True)
 df_test = df[~df.index.isin(train_df.index)]
