@@ -16,7 +16,7 @@ base_path = pathlib.Path(__file__).parent
 temp_path = base_path.joinpath('temp_dir')
 
 # model parameters
-state = np.random.RandomState(0)
+state = np.random.RandomState(12345)
 seed = np.random.seed(22)
 skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=state)
 
