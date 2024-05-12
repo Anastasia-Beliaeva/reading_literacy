@@ -18,7 +18,7 @@ results_path = base_path.joinpath('results')
 df = pd.read_csv(base_path.joinpath('df_preprocessed.csv'))
 target_list = ['score_0', 'score_1', 'score_2']
 df.rename(columns={'student_id': 'id'}, inplace=True)
-
+print(df)
 # hyperparameters
 MAX_LEN = 50
 TRAIN_BATCH_SIZE = 32
@@ -116,7 +116,6 @@ class RUClass(torch.nn.Module):
     def __init__(self):
         super(RUClass, self).__init__()
         self.ru_model = AutoModel.from_pretrained("ai-forever/sbert_large_mt_nlu_ru", return_dict=True, num_labels=3)
-        self.dropout = torch.nn.Dropout(0.1)
         self.linear1 = torch.nn.Linear(1024, 3)
 
     def forward(self, input_ids, attn_mask, token_type_ids):
@@ -125,8 +124,7 @@ class RUClass(torch.nn.Module):
             attention_mask=attn_mask,
             token_type_ids=token_type_ids
         )
-        output_dropout = self.dropout(output.pooler_output)
-        output = self.linear1(output_dropout)
+        output = self.linear1(output.pooler_output)
         return output
 
 model = RUClass()
