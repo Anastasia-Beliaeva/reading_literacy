@@ -21,8 +21,8 @@ seed = np.random.seed(22)
 skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=state)
 
 # load datasets that were used to train and test LLM
-train_x = pd.read_csv(temp_path.joinpath('train_LLM_outputs.csv'), index_col='Unnamed: 0')
-test_x = pd.read_csv(temp_path.joinpath('test_LLM_outputs.csv'), index_col='Unnamed: 0')
+train_x = pd.read_csv(temp_path.joinpath('train_for_git.csv'), index_col='id')
+test_x = pd.read_csv(temp_path.joinpath('test_for_git.csv'), index_col='id')
 train_y = pd.DataFrame()
 test_y = pd.DataFrame()
 train_y['mark'] = train_x['mark']
