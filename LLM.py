@@ -15,10 +15,8 @@ base_path = pathlib.Path(__file__).parent
 temp_path = base_path.joinpath('temp_dir')
 results_path = base_path.joinpath('results')
 
-df = pd.read_csv(base_path.joinpath('df_preprocessed.csv'))
+
 target_list = ['score_0', 'score_1', 'score_2']
-df.rename(columns={'student_id': 'id'}, inplace=True)
-print(df)
 # hyperparameters
 MAX_LEN = 50
 TRAIN_BATCH_SIZE = 32
@@ -70,13 +68,9 @@ class CustomDataset(torch.utils.data.Dataset):
         }
 
 # prepare and load train and test datasets
-train_size = 0.7
-train_df = df.sample(frac=train_size, random_state=0).reset_index(drop=True)
-train_df.set_index('id', inplace=True)
-df.set_index('id', inplace=True)
-df_test = df[~df.index.isin(train_df.index)]
-train_df.reset_index(inplace=True)
-df_test.reset_index(inplace=True)
+train_df = pd.read_csv(base_path.joinpath('train_for_git.csv'))
+df_test = pd.read_csv(base_path.joinpath('test_for_git.csv'))
+
 train_dataset = CustomDataset(train_df, tokenizer, MAX_LEN)
 test_dataset = CustomDataset(df_test, tokenizer, MAX_LEN)
 TEST_BATCH_SIZE = 32
@@ -236,13 +230,6 @@ best_model_path = results_path.joinpath("best_model.pt")
 
 trained_model, test_output, test_targets, conf_matrix, ids, train_outputs = \
     train_model(EPOCHS, train_data_loader, test_data_loader, model, optimizer, ckpt_path, best_model_path)
-
-# save train and test datasets to use them in Random Forest
-# СОХРАНИТЬ КУДА-ТО И ИСПОЛЬЗОВАТЬ В Random forest
-df_test['LLM_outputs'] = test_output
-df_test.to_csv(temp_path.joinpath('test_LLM_outputs.csv'))
-train_df['LLM_outputs'] = train_outputs
-train_df.to_csv(temp_path.joinpath('train_LLM_outputs.csv'))
 
 # metrics report
 report = classification_report(test_targets, test_output)
