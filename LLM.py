@@ -20,7 +20,7 @@ target_list = ['score_0', 'score_1', 'score_2']
 # hyperparameters
 MAX_LEN = 50
 TRAIN_BATCH_SIZE = 32
-VALID_BATCH_SIZE = 32
+TEST_BATCH_SIZE = 32
 EPOCHS = 30
 LEARNING_RATE = 1e-05
 
